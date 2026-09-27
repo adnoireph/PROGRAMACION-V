@@ -30,6 +30,24 @@ export async function createMateria(userId, materia) {
   await ensureUniqueFields(userId, materia);
   return materiasRepository.createMateria(userId, materia);
 }
+/** 
+* Valida que el código y el nombre de una materia sean únicos para un usuario específico.
+* 
+* @async
+* @function ensureUniqueFields
+* @param {string|number} userId - Identificador único del usuario dueño de la materia.
+* @param {Object} materia - Objeto que contiene los datos de la materia a validar.
+* @param {string} [materia.codigo] - Código identificador de la materia (opcional).
+* @param {string} [materia.nombre] - Nombre de la materia (opcional).
+* @param {string|number} [excludeId] - ID de una materia existente a excluir de la validación (útil en actualizaciones).
+* 
+* @returns {Promise} No retorna ningún valor si las validaciones son exitosas.
+* 
+* @throws {HttpError} Código 409 (DUPLICATE_CODE) si el código ya está registrado para el usuario.
+* @throws {HttpError} Código 409 (DUPLICATE_NAME) si el nombre ya está registrado para el usuario.
+*/
+
+
 
 async function ensureUniqueFields(userId, materia, excludeId) {
   if (materia.codigo) {
@@ -64,4 +82,11 @@ export async function updateMateria(id, userId, partialMateria) {
 export async function removeMateria(id, userId) {
   await getMateriaById(id, userId);
   await materiasRepository.deleteMateria(id, userId);
+}
+export async function getTareasByMateria(materiaId, userId) {
+    // Primero validamos que la materia exista y le pertenezca al usuario
+    await getMateriaById(materiaId, userId);
+    
+    // Luego llamamos al repositorio para buscar las tareas
+    return await materiasRepository.findTareasByMateriaId(materiaId, userId);
 }

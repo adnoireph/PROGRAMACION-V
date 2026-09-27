@@ -22,4 +22,6 @@ router.put("/:id", replaceMateria);
 router.patch("/:id", updateMateria);
 router.delete("/:id", deleteMateria);
 
+router.get("/:id/tareas", getTareasByMateria);
+
 export default router;

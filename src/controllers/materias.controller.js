@@ -8,6 +8,13 @@ import {
     validatePatchMateria
 } from "../validators/materias.validator.js";
 
+/**
+ * Controlador para listar las materias de un usuario con filtros y paginación.
+ * @param {Object} request - Objeto de petición HTTP de Express.
+ * @param {Object} response - Objeto de respuesta HTTP de Express.
+ * @param {Function} next - Función middleware para manejo de errores.
+ */
+
 export async function listMaterias(request, response, next) {
   try {
     const filters = validateMateriaListQuery(request.query);
@@ -17,6 +24,13 @@ export async function listMaterias(request, response, next) {
     return next(error);
   }
 }
+
+/**
+ * Controlador para obtener una materia específica por su ID.
+ * @param {Object} request - Objeto de petición HTTP de Express.
+ * @param {Object} response - Objeto de respuesta HTTP de Express.
+ * @param {Function} next - Función middleware para manejo de errores.
+ */
 
 export async function getMateriaById(request, response, next) {
   try {
@@ -29,6 +43,13 @@ export async function getMateriaById(request, response, next) {
     return next(error);
   }
 }
+
+/**
+ * Controlador para listar las materias de un usuario con filtros y paginación.
+ * @param {Object} request - Objeto de petición HTTP de Express.
+ * @param {Object} response - Objeto de respuesta HTTP de Express.
+ * @param {Function} next - Función middleware para manejo de errores.
+ */
 
 export async function createMateria(request, response, next) {
   try {
@@ -70,4 +91,22 @@ export async function deleteMateria(request, response, next) {
   } catch (error) {
     return next(error);
   }
+}
+
+/**
+ * Controlador para obtener las tareas de una materia específica por su ID.
+ * @param {Object} request - Objeto de petición HTTP de Express.
+ * @param {Object} response - Objeto de respuesta HTTP de Express.
+ * @param {Function} next - Función middleware para manejo de errores.
+ */
+export async function getTareasByMateria(request, response, next) {
+    try {
+        const materiaId = validateMateriaId(request.params.id); // Validamos el ID de la materia
+        const userId = request.user.id; // Obtenemos el ID del usuario autenticado
+
+        const tareas = await materiasService.getTareasByMateria(materiaId, userId);
+        return sendSuccess(response, tareas);
+    } catch (error) {
+        return next(error);
+    }
 }

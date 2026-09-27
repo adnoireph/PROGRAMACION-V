@@ -33,6 +33,13 @@ function mapMateria(row) {
   };
 }
 
+/**
+ * Busca y obtiene todas las materias asociadas a un usuario, aplicando filtros opcionales.
+ * @param {string} userId - ID único del usuario.
+ * @param {Object} filters - Objeto con filtros de búsqueda (estado, texto, paginación).
+ * @returns {Promise<Array>} Retorna la lista de materias que coinciden con los criterios.
+ */
+
 export async function findAllByUserId(userId, filters = {}) {
 
   const conditions = ["m.id_usuario = ?"];
@@ -235,4 +242,13 @@ export async function updateMateria(id, userId, materia) {
   );
 
   return findByIdAndUserId(id, userId);
+}
+export async function findTareasByMateriaId(materiaId, userId) {
+    const [rows] = await pool.execute(
+        `SELECT t.* FROM tarea t 
+         INNER JOIN materia m ON t.id_materia = m.id_materia 
+         WHERE t.id_materia = ? AND m.id_usuario = ?`,
+        [materiaId, userId]
+    );
+    return rows;
 }
