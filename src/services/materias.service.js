@@ -90,3 +90,11 @@ export async function getTareasByMateria(materiaId, userId) {
     // Luego llamamos al repositorio para buscar las tareas
     return await materiasRepository.findTareasByMateriaId(materiaId, userId);
 }
+
+export async function listEventosByMateria(materiaId, userId) {
+  // Primero validamos que la materia exista y le pertenezca al usuario
+  await getMateriaById(materiaId, userId);
+
+  // Luego llamamos al repositorio para buscar los eventos
+  return await materiasRepository.findEventosByMateriaAndUserId(materiaId, userId);
+}

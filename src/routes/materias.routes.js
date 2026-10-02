@@ -1,14 +1,14 @@
 import { Router } from "express";
 
 import {
-
     listMaterias,
     getMateriaById,
     createMateria,
     replaceMateria,
     updateMateria,
-    deleteMateria
-
+    deleteMateria,
+    getTareasByMateria,
+    listEventosByMateria  
 } from "../controllers/materias.controller.js";
 
 const router = Router();
@@ -23,5 +23,6 @@ router.patch("/:id", updateMateria);
 router.delete("/:id", deleteMateria);
 
 router.get("/:id/tareas", getTareasByMateria);
+router.get("/:id/eventos", listEventosByMateria); 
 
 export default router;

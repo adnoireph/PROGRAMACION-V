@@ -110,3 +110,20 @@ export async function getTareasByMateria(request, response, next) {
         return next(error);
     }
 }
+/**
+ * Controlador para obtener los eventos de una materia específica por su ID.
+ * @param {Object} request - Objeto de petición HTTP de Express.
+ * @param {Object} response - Objeto de respuesta HTTP de Express.
+ * @param {Function} next - Función middleware para manejo de errores.
+ */
+export async function listEventosByMateria(request, response, next) {
+  try {
+    const materiaId = validateMateriaId(request.params.id); // Validamos el ID de la materia
+    const userId = request.user.id; // Obtenemos el ID del usuario autenticado
+
+    const eventos = await materiasService.listEventosByMateria(materiaId, userId);
+    return sendSuccess(response, eventos);
+  } catch (error) {
+    return next(error);
+  }
+}
